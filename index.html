@@ -14,204 +14,377 @@
             --border: rgba(255, 255, 255, 0.1);
         }
 
-        body, html {
-            margin: 0; padding: 0; height: 100%;
-            background: #050508; color: white;
-            font-family: 'Montserrat', sans-serif;
-            overflow: hidden; touch-action: none;
+        *, *::before, *::after {
+            box-sizing: border-box;
         }
 
-        /* Анимированный фон (Свечение) - улучшенный */
-        .bg-glow {
-            position: fixed; width: 300px; height: 300px;
-            background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 70%);
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-            z-index: -1; filter: blur(50px); animation: pulseBg 8s infinite alternate;
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: #050508;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            touch-action: none;
         }
-        @keyframes pulseBg { 
-            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+
+        /* Фоновые свечения */
+        .bg-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            filter: blur(50px);
+            animation: pulseBg 8s infinite alternate;
+        }
+
+        @keyframes pulseBg {
+            0%   { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
             100% { transform: translate(-50%, -50%) scale(1.8); opacity: 1; }
         }
 
-        /* Дополнительный фон для красоты */
         .bg-glow-2 {
-            position: fixed; width: 400px; height: 400px;
+            position: fixed;
+            width: 400px;
+            height: 400px;
             background: radial-gradient(circle, rgba(255, 215, 0, 0.08) 0%, transparent 70%);
-            top: 30%; left: 20%; z-index: -1; filter: blur(60px);
+            top: 30%;
+            left: 20%;
+            z-index: -1;
+            filter: blur(60px);
             animation: floatBg 12s infinite alternate;
         }
+
         @keyframes floatBg {
-            0% { transform: translate(0, 0) scale(1); }
+            0%   { transform: translate(0, 0) scale(1); }
             100% { transform: translate(50px, 50px) scale(1.3); }
         }
 
+        /* Экраны */
         .screen {
-            position: fixed; inset: 0; display: none;
-            flex-direction: column; align-items: center; justify-content: center;
-            padding: 30px; text-align: center; opacity: 0; transition: 0.6s;
+            position: fixed;
+            inset: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.6s;
         }
-        .active { display: flex; opacity: 1; }
 
-        h1 { 
-            font-size: 1.5rem; font-weight: 900; letter-spacing: 3px; 
-            color: var(--gold); text-transform: uppercase; margin: 0;
+        .screen.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin: 0;
             animation: titleGlow 2s ease-in-out infinite;
         }
+
         @keyframes titleGlow {
-            0%, 100% { text-shadow: 0 0 5px rgba(255,215,0,0.3); }
-            50% { text-shadow: 0 0 20px rgba(255,215,0,0.8); }
+            0%, 100% { text-shadow: 0 0 5px rgba(255, 215, 0, 0.3); }
+            50%       { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
         }
 
-        .instr { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin: 15px 0 25px 0; font-weight: 300; }
+        .instr {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin: 15px 0 25px;
+            font-weight: 300;
+        }
 
-        /* Telegram Уведомление - улучшенная анимация */
+        /* Telegram-уведомление */
         #tg-notify {
-            position: fixed; top: -120px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 360px; background: rgba(25, 25, 27, 0.95);
-            border-radius: 20px; padding: 15px; display: flex; align-items: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6); z-index: 1000;
-            transition: 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-            border: 1px solid var(--border); backdrop-filter: blur(15px);
+            position: fixed;
+            top: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 360px;
+            background: rgba(25, 25, 27, 0.95);
+            border-radius: 20px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            transition: top 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(15px);
         }
-        .tg-icon { 
-            width: 45px; height: 45px; background: #24A1DE; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; margin-right: 15px;
+
+        .tg-icon {
+            width: 45px;
+            height: 45px;
+            background: #24A1DE;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
             animation: tgPulse 1.5s infinite;
         }
+
         @keyframes tgPulse {
             0%, 100% { box-shadow: 0 0 0 0 rgba(36, 161, 222, 0.7); }
-            50% { box-shadow: 0 0 0 10px rgba(36, 161, 222, 0); }
+            50%       { box-shadow: 0 0 0 10px rgba(36, 161, 222, 0); }
         }
-        .tg-name { font-weight: 700; font-size: 0.9rem; margin-bottom: 2px; display: block;}
-        .tg-msg { font-size: 0.85rem; color: #d1d1d6; }
 
-        /* Деревянные карточки (Premium look) - улучшенные анимации */
-        .wood-item {
-            position: relative; width: 300px; height: 85px; margin: 12px 0;
-            border-radius: 15px; border: 1px solid #3e2723;
-            background: linear-gradient(145deg, #4e342e, #2a1a15);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5); overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .tg-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+            display: block;
+            text-align: left;
         }
+
+        .tg-msg {
+            font-size: 0.85rem;
+            color: #d1d1d6;
+            text-align: left;
+        }
+
+        /* Карточки с царапаньем */
+        .wood-item {
+            position: relative;
+            width: 300px;
+            height: 85px;
+            margin: 12px 0;
+            border-radius: 15px;
+            border: 1px solid #3e2723;
+            background: linear-gradient(145deg, #4e342e, #2a1a15);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
         .wood-item:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
         }
-        .wish-text { 
-            position: absolute; inset: 0; display: flex; align-items: center; 
-            justify-content: center; font-weight: 600; font-size: 0.85rem; 
-            padding: 0 20px; z-index: 1; 
-            animation: textPulse 2s infinite;
-        }
-        @keyframes textPulse {
-            0%, 100% { opacity: 0.9; }
-            50% { opacity: 1; text-shadow: 0 0 3px rgba(255,215,0,0.5); }
-        }
-        canvas.scratch { position: absolute; inset: 0; z-index: 2; touch-action: none; cursor: grab; }
-        canvas.scratch:active { cursor: grabbing; }
 
-        /* Сфера - улучшенная анимация */
-        #orb-wrap { position: relative; width: 160px; height: 160px; }
+        .wish-text {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 0 20px;
+            z-index: 1;
+        }
+
+        canvas.scratch {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            touch-action: none;
+            cursor: grab;
+        }
+
+        canvas.scratch:active {
+            cursor: grabbing;
+        }
+
+        /* Сфера */
+        #orb-wrap {
+            position: relative;
+            width: 160px;
+            height: 160px;
+        }
+
         #orb {
-            width: 100%; height: 100%; border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, var(--accent), #004e92);
             box-shadow: 0 0 50px rgba(0, 212, 255, 0.3);
-            display: flex; align-items: center; justify-content: center; font-size: 3rem; cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            cursor: pointer;
             transition: transform 0.07s ease;
             animation: orbFloat 3s ease-in-out infinite;
         }
+
         @keyframes orbFloat {
             0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
+            50%       { transform: translateY(-8px); }
         }
+
         #orb:active {
             transform: scale(0.92) !important;
         }
-        .progress-bar { width: 260px; height: 6px; background: var(--glass); border-radius: 10px; margin-top: 35px; overflow: hidden; border: 1px solid var(--border); }
-        #bar { width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold)); transition: 0.2s; }
 
-        /* Подарок - улучшенная анимация */
-        #gift { 
-            position: absolute; font-size: 55px; filter: drop-shadow(0 0 15px var(--gold)); 
-            cursor: pointer; transition: all 0.15s ease-out;
+        .progress-bar {
+            width: 260px;
+            height: 6px;
+            background: var(--glass);
+            border-radius: 10px;
+            margin-top: 35px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        #bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--gold));
+            transition: width 0.2s;
+        }
+
+        /* Подарок */
+        #gift {
+            position: absolute;
+            font-size: 55px;
+            filter: drop-shadow(0 0 15px var(--gold));
+            cursor: pointer;
+            transition: all 0.15s ease-out;
             animation: giftShake 0.5s ease-in-out infinite;
         }
+
         @keyframes giftShake {
             0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(5deg); }
-            75% { transform: rotate(-5deg); }
+            25%       { transform: rotate(5deg); }
+            75%       { transform: rotate(-5deg); }
         }
+
         #gift:active {
             transform: scale(0.8) !important;
         }
 
+        /* Поле ввода для секретного уровня */
+        .code-input {
+            width: 280px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.1rem;
+            text-align: center;
+            outline: none;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+
+        .code-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .hint-text {
+            font-size: 0.75rem;
+            color: #888888;
+            margin-top: 15px;
+            font-style: italic;
+            max-width: 280px;
+            line-height: 1.4;
+        }
+
+        /* Кнопки */
         .btn {
-            padding: 18px 45px; background: rgba(255,215,0,0.1); border: 1px solid var(--gold);
-            color: var(--gold); border-radius: 15px; font-weight: 700; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem;
-            transition: all 0.3s ease;
+            padding: 18px 45px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            border-radius: 15px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            transition: background 0.3s, box-shadow 0.3s, transform 0.15s;
             position: relative;
             overflow: hidden;
         }
+
         .btn:hover {
-            background: rgba(255,215,0,0.2);
-            box-shadow: 0 0 20px rgba(255,215,0,0.3);
+            background: rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
             transform: scale(1.05);
         }
+
         .btn:active {
             transform: scale(0.95);
         }
 
-        .cndl { 
-            font-size: 35px; cursor: pointer; opacity: 0.2; margin: 0 8px; 
-            filter: grayscale(1); transition: all 0.3s ease;
+        @keyframes btnPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
+            50%       { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
+        }
+
+        /* Свечи */
+        .cndl {
+            font-size: 35px;
+            cursor: pointer;
+            opacity: 0.2;
+            margin: 0 8px;
+            filter: grayscale(1);
+            transition: all 0.3s;
             display: inline-block;
         }
-        .cndl.on { 
-            opacity: 1; filter: grayscale(0); 
+
+        .cndl.on {
+            opacity: 1;
+            filter: grayscale(0);
             text-shadow: 0 0 20px #ffae00;
             animation: candleBlaze 0.5s ease-in-out infinite;
         }
+
         @keyframes candleBlaze {
-            0%, 100% { transform: scale(1); text-shadow: 0 0 20px #ffae00; }
-            50% { transform: scale(1.1); text-shadow: 0 0 35px #ff6600; }
+            0%, 100% { transform: scale(1);   text-shadow: 0 0 20px #ffae00; }
+            50%       { transform: scale(1.1); text-shadow: 0 0 35px #ff6600; }
         }
 
+        /* Торт */
         #cake {
-            font-size: 100px; transition: 0.5s cubic-bezier(0.34, 1.2, 0.64, 1);
+            font-size: 100px;
+            transition: transform 0.5s cubic-bezier(0.34, 1.2, 0.64, 1);
             cursor: pointer;
         }
+
         #cake:hover {
             transform: scale(1.05);
         }
 
-        /* Анимация для typewriter */
+        /* Вводный текст */
         #typewriter {
-            font-weight: 300; letter-spacing: 1px;
+            font-weight: 300;
+            letter-spacing: 1px;
             animation: fadeInUp 0.8s ease;
-        }
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            max-width: 320px;
+            line-height: 1.6;
         }
 
-        /* Частицы конфетти - улучшенные */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Конфетти */
         .confetti-particle {
             position: fixed;
             pointer-events: none;
             z-index: 9999;
-        }
-
-        /* Анимация для кнопки далее */
-        @keyframes btnPulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(255,215,0,0.4); }
-            50% { box-shadow: 0 0 0 10px rgba(255,215,0,0); }
         }
     </style>
 </head>
@@ -222,298 +395,332 @@
 
 <div id="tg-notify">
     <div class="tg-icon">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.52-1.4.51-.46-.01-1.35-.26-2.01-.48-.81-.27-1.45-.42-1.39-.88.03-.24.37-.48 1.02-.73 4-1.74 6.67-2.88 8.01-3.43 3.81-1.56 4.6-1.83 5.12-1.84.11 0 .37.03.54.17.14.11.18.27.2.39-.01.06-.01.12-.02.17z"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.52-1.4.51-.46-.01-1.35-.26-2.01-.48-.81-.27-1.45-.42-1.39-.88.03-.24.37-.48 1.02-.73 4-1.74 6.67-2.88 8.01-3.43 3.81-1.56 4.6-1.83 5.12-1.84.11 0 .37.03.54.17.14.11.18.27.2.39-.01.06-.01.12-.02.17z"/>
+        </svg>
     </div>
     <div class="tg-content">
         <span class="tg-name">Бобик</span>
-        <span class="tg-msg">Давай быстрее, я уже красный 😱😡</span>
+        <span class="tg-msg">Давай быстрее, я уже красный 😤</span>
     </div>
 </div>
 
 <div id="s0" class="screen active">
-    <div id="typewriter" style="font-weight: 300; letter-spacing: 1px;"></div>
-    <button id="btn0" class="btn" style="display:none; margin-top: 40px;" onclick="to(1)">Открыть квест</button>
+    <div id="typewriter"></div>
+    <button id="btn0" class="btn" style="display:none; margin-top: 40px;" onclick="goTo(1)">Открыть квест</button>
 </div>
 
 <div id="s1" class="screen">
     <h1>ТЫ ПРОСТО БОСС</h1>
-    <p class="instr">Сотри защитный слой до конца, <br>чтобы забрать свои пожелания.</p>
-    <div class="wood-item"><div class="wish-text">Ярких путешествий и сочного вайба! ✨</div><canvas class="scratch"></canvas></div>
-    <div class="wood-item"><div class="wish-text">Всегда будь на первом месте! 🏆</div><canvas class="scratch"></canvas></div>
-    <div class="wood-item"><div class="wish-text">Успеха, любви и верных друзей! 💎</div><canvas class="scratch"></canvas></div>
-    <button id="btn1" class="btn" style="display:none" onclick="to(2)">Далее</button>
+    <p class="instr">Сотри защитный слой,<br>чтобы открыть пожелания.</p>
+    <div class="wood-item">
+        <div class="wish-text">Ярких путешествий и незабываемых моментов</div>
+        <canvas class="scratch"></canvas>
+    </div>
+    <div class="wood-item">
+        <div class="wish-text">Всегда держи первое место — ты его заслуживаешь</div>
+        <canvas class="scratch"></canvas>
+    </div>
+    <div class="wood-item">
+        <div class="wish-text">Успеха, здоровья и людей, которым можно доверять</div>
+        <canvas class="scratch"></canvas>
+    </div>
+    <button id="btn1" class="btn" style="display:none; margin-top: 20px;" onclick="goTo(2)">Далее</button>
 </div>
 
 <div id="s2" class="screen">
     <h1>ТЫ ПРОСТО НАЧАЛЬНИК</h1>
-    <p class="instr">Заряди этот день! <br>Нужно 50 мощных тапов по сфере.</p>
-    <div id="orb-wrap" onclick="hit()"><div id="orb">💎</div></div>
+    <p class="instr">50 тапов по сфере.<br>Давай, не отлынивай.</p>
+    <div id="orb-wrap" onclick="hit()">
+        <div id="orb">💎</div>
+    </div>
     <div class="progress-bar"><div id="bar"></div></div>
     <p id="counter" style="margin-top:15px; font-weight:600; color:var(--accent);">ENERGY: 0%</p>
-    <button id="btn2" class="btn" style="display:none" onclick="to(3)">Взлетаем</button>
+    <button id="btn2" class="btn" style="display:none; margin-top: 20px;" onclick="goTo(3)">Дальше</button>
 </div>
 
 <div id="s3" class="screen">
-    <h1>ЛОВИ ПОДГОН</h1>
-    <p class="instr">Поймай праздничное настроение 15 раз.</p>
-    <div id="zone" style="width: 300px; height: 320px; border: 1px solid var(--border); position: relative; border-radius: 25px; background: var(--glass);">
-        <div id="gift" onclick="catchG()">🎁</div>
+    <h1>ТЫ ПРОСТО НАЧАЛЬНИК</h1>
+    <p class="instr">Поймай настроение 15 раз.</p>
+    <div id="zone" style="width:300px; height:320px; border:1px solid var(--border); position:relative; border-radius:25px; background:var(--glass);">
+        <div id="gift" onclick="catchGift()">🎁</div>
     </div>
-    <p id="g-count" style="margin-top: 15px; font-weight: 700; color: var(--gold);">СЧЕТ: 0 / 15</p>
-    <button id="btn3" class="btn" style="display:none" onclick="to(4)">Финал</button>
+    <p id="g-count" style="margin-top:15px; font-weight:700; color:var(--gold);">СЧЁТ: 0 / 15</p>
+    <button id="btn3" class="btn" style="display:none; margin-top: 20px;" onclick="goTo(4)">Дальше</button>
 </div>
 
 <div id="s4" class="screen">
-    <h1 style="font-size: 2rem; color: #fff;">HAPPY BIRTHDAY!</h1>
-    <p style="color: var(--gold); font-weight: 600; letter-spacing: 2px;">СИЯЙ ЯРЧЕ ВСЕХ</p>
+    <h1>СЕКРЕТНЫЙ ШИФР</h1>
+    <p class="instr">Докажи, что ты настоящий техник. Введи секретное слово:</p>
+    <input type="text" id="code-field" class="code-input" placeholder="ВВЕДИ СЛОВО..." autocomplete="off">
+    <p class="hint-text">Подсказка: что можно улучшить, но нельзя купить?</p>
+    <button id="btn-check" class="btn" style="margin-top: 30px;" onclick="validateCode()">Проверить</button>
+</div>
+
+<div id="s5" class="screen">
+    <h1 style="font-size:2rem; color:#fff;">С ДНЁМ РОЖДЕНИЯ!</h1>
+    <p style="color:var(--gold); font-weight:600; letter-spacing:2px;">СИЯЙ ЯРЧЕ ВСЕХ</p>
     <div style="margin: 35px 0;">
-        <span class="cndl" onclick="light(this)">🕯️</span>
-        <span class="cndl" onclick="light(this)">🕯️</span>
-        <span class="cndl" onclick="light(this)">🕯️</span>
+        <span class="cndl" onclick="lightCandle(this)">🕯️</span>
+        <span class="cndl" onclick="lightCandle(this)">🕯️</span>
+        <span class="cndl" onclick="lightCandle(this)">🕯️</span>
     </div>
-    <div id="cake" style="font-size: 100px; transition: 0.5s;">🎂</div>
+    <div id="cake">🎂</div>
 </div>
 
 <script>
-    const text = "Этот квест создан специально для тебя. Постарайся не подвести Бобика...";
-    let idx = 0;
-    function type() {
-        if (idx < text.length) {
-            document.getElementById("typewriter").innerHTML += text.charAt(idx);
-            idx++; setTimeout(type, 50);
-        } else { 
-            document.getElementById("btn0").style.display = "block";
-            document.getElementById("btn0").style.animation = "btnPulse 1.5s infinite";
+    // --- Экран 0: печатающийся текст ---
+    const introText = "Этот квест создан специально для тебя. Постарайся не подвести Бобика...";
+    let charIndex = 0;
+
+    function typeIntro() {
+        const el = document.getElementById("typewriter");
+        if (charIndex < introText.length) {
+            el.innerHTML += introText.charAt(charIndex);
+            charIndex++;
+            setTimeout(typeIntro, 50);
+        } else {
+            const btn = document.getElementById("btn0");
+            btn.style.display = "block";
+            btn.style.animation = "btnPulse 1.5s infinite";
         }
     }
-    window.onload = type;
 
-    function to(n) {
+    window.onload = typeIntro;
+
+    // --- Переход между экранами ---
+    function goTo(n) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        const next = document.getElementById('s' + n);
-        next.classList.add('active');
-        if(n === 1) initScratch();
-        if(n === 2) setTimeout(showTG, 1500);
-        if(n === 3) moveG();
-        if(n === 4) {
-            // Добавляем небольшую задержку для плавного появления конфетти
-            setTimeout(() => {
-                for(let i = 0; i < 50; i++) {
-                    setTimeout(() => createConfetti(), i * 30);
-                }
-            }, 500);
-        }
+        document.getElementById('s' + n).classList.add('active');
+
+        if (n === 1) initScratch();
+        if (n === 2) setTimeout(showTG, 1500);
+        if (n === 3) moveGift();
+        if (n === 5) setTimeout(launchConfetti, 500);
     }
 
+    // --- Telegram-уведомление ---
     function showTG() {
         const tg = document.getElementById('tg-notify');
         tg.style.top = "20px";
         setTimeout(() => { tg.style.top = "-120px"; }, 4500);
     }
 
-    let scratched = 0;
+    // --- Скретч-карточки ---
+    let scratchedCount = 0;
+
     function initScratch() {
-        const canvases = document.querySelectorAll('.scratch');
-        canvases.forEach(canv => {
-            const ctx = canv.getContext('2d');
-            canv.width = 300; canv.height = 85;
-            // Красивый градиент для слоя
+        document.querySelectorAll('.scratch').forEach(canvas => {
+            const ctx = canvas.getContext('2d');
+            canvas.width = 300;
+            canvas.height = 85;
+
             const grad = ctx.createLinearGradient(0, 0, 300, 85);
             grad.addColorStop(0, '#3a251c');
             grad.addColorStop(1, '#1f120b');
             ctx.fillStyle = grad;
-            ctx.fillRect(0,0,300,85);
+            ctx.fillRect(0, 0, 300, 85);
+
             ctx.fillStyle = '#b8860b';
             ctx.font = "bold 12px 'Montserrat'";
             ctx.textAlign = "center";
             ctx.fillText("★ Сотри меня ★", 150, 45);
-            
-            let isDone = false;
+
+            let done = false;
+
             function scrub(e) {
                 e.preventDefault();
-                const r = canv.getBoundingClientRect();
-                const x = (e.clientX || e.touches[0].clientX) - r.left;
-                const y = (e.clientY || e.touches[0].clientY) - r.top;
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX ?? e.touches[0].clientX) - rect.left;
+                const y = (e.clientY ?? e.touches[0].clientY) - rect.top;
+
                 ctx.globalCompositeOperation = 'destination-out';
-                ctx.beginPath(); ctx.arc(x, y, 22, 0, Math.PI*2); ctx.fill();
-                
-                // Проверка на 85% очистки
-                const data = ctx.getImageData(0,0,300,85).data;
-                let t = 0;
-                for(let j=3; j<data.length; j+=4) if(data[j]===0) t++;
-                if(!isDone && t > (300*85*0.85)) {
-                    isDone = true; 
-                    scratched++;
-                    // Эффект при завершении
-                    canv.style.transition = "opacity 0.5s";
-                    canv.style.opacity = "0.8";
-                    if(scratched >= 3) {
-                        document.getElementById('btn1').style.display = 'block';
-                        document.getElementById('btn1').style.animation = "btnPulse 1.5s infinite";
+                ctx.beginPath();
+                ctx.arc(x, y, 22, 0, Math.PI * 2);
+                ctx.fill();
+
+                if (!done && isScratched(ctx)) {
+                    done = true;
+                    scratchedCount++;
+                    canvas.style.transition = "opacity 0.5s";
+                    canvas.style.opacity = "0.8";
+
+                    if (scratchedCount >= 3) {
+                        const btn = document.getElementById('btn1');
+                        btn.style.display = 'block';
+                        btn.style.animation = "btnPulse 1.5s infinite";
                     }
                 }
             }
-            canv.addEventListener('touchmove', scrub, { passive: false });
-            canv.addEventListener('mousemove', (e) => { if(e.buttons === 1) scrub(e); });
+
+            canvas.addEventListener('touchmove', scrub, { passive: false });
+            canvas.addEventListener('mousemove', e => { if (e.buttons === 1) scrub(e); });
         });
     }
 
-    let eng = 0;
+    function isScratched(ctx) {
+        const data = ctx.getImageData(0, 0, 300, 85).data;
+        let cleared = 0;
+        for (let i = 3; i < data.length; i += 4) {
+            if (data[i] === 0) cleared++;
+        }
+        return cleared > 300 * 85 * 0.85;
+    }
+
+    // --- Сфера ---
+    let energy = 0;
+
     function hit() {
-        if(eng < 100) {
-            eng += 2;
-            document.getElementById('bar').style.width = eng + '%';
-            document.getElementById('counter').innerText = `ENERGY: ${Math.floor(eng)}%`;
-            const orb = document.getElementById('orb');
-            orb.style.transform = 'scale(0.92)';
-            setTimeout(()=> { if(orb) orb.style.transform = 'scale(1)'; }, 70);
-            
-            // Эффект частиц при тапе
-            createTapEffect();
-            
-            if(eng >= 100) {
-                document.getElementById('btn2').style.display = 'block';
-                document.getElementById('btn2').style.animation = "btnPulse 1.5s infinite";
-                // Финальный эффект
-                for(let i = 0; i < 30; i++) {
-                    setTimeout(() => createConfetti(), i * 50);
-                }
-            }
+        if (energy >= 100) return;
+
+        energy = Math.min(100, energy + 2);
+        document.getElementById('bar').style.width = energy + '%';
+        document.getElementById('counter').innerText = `ENERGY: ${Math.floor(energy)}%`;
+
+        const orb = document.getElementById('orb');
+        orb.style.transform = 'scale(0.92)';
+        setTimeout(() => { orb.style.transform = 'scale(1)'; }, 70);
+
+        spawnTapParticle();
+
+        if (energy >= 100) {
+            const btn = document.getElementById('btn2');
+            btn.style.display = 'block';
+            btn.style.animation = "btnPulse 1.5s infinite";
+            for (let i = 0; i < 30; i++) setTimeout(createConfetti, i * 50);
         }
     }
-    
-    function createTapEffect() {
-        const orbWrap = document.getElementById('orb-wrap');
-        const rect = orbWrap.getBoundingClientRect();
-        const particle = document.createElement('div');
-        particle.style.position = 'fixed';
-        particle.style.left = rect.left + rect.width/2 + 'px';
-        particle.style.top = rect.top + rect.height/2 + 'px';
-        particle.style.width = '8px';
-        particle.style.height = '8px';
-        particle.style.background = 'radial-gradient(circle, #00d4ff, #ffd700)';
-        particle.style.borderRadius = '50%';
-        particle.style.pointerEvents = 'none';
-        particle.style.zIndex = '9999';
-        document.body.appendChild(particle);
-        
-        particle.animate([
-            { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+
+    function spawnTapParticle() {
+        const rect = document.getElementById('orb-wrap').getBoundingClientRect();
+        const p = document.createElement('div');
+        p.style.cssText = `
+            position:fixed; pointer-events:none; z-index:9999; border-radius:50%;
+            width:8px; height:8px;
+            background:radial-gradient(circle, #00d4ff, #ffd700);
+            left:${rect.left + rect.width / 2}px;
+            top:${rect.top + rect.height / 2}px;
+        `;
+        document.body.appendChild(p);
+        p.animate([
+            { transform: 'translate(0,0) scale(1)', opacity: 1 },
             { transform: `translate(${(Math.random() - 0.5) * 60}px, ${(Math.random() - 0.5) * 60 - 30}px) scale(0)`, opacity: 0 }
         ], { duration: 500, easing: 'cubic-bezier(0.2, 0.9, 0.4, 1)' });
-        
-        setTimeout(() => particle.remove(), 500);
+        setTimeout(() => p.remove(), 500);
     }
 
-    let caught = 0;
-    function moveG() {
-        const g = document.getElementById('gift');
-        const speed = Math.max(0.15, 0.35 - (caught * 0.01));
-        g.style.transition = `all ${speed}s cubic-bezier(0.34, 1.2, 0.64, 1)`;
-        const randomX = Math.random() * 240;
-        const randomY = Math.random() * 250;
-        g.style.left = randomX + 'px';
-        g.style.top = randomY + 'px';
-        
-        // Добавляем эффект при движении
-        g.style.transform = 'rotate(5deg)';
-        setTimeout(() => { if(g) g.style.transform = 'rotate(0deg)'; }, 100);
+    // --- Ловля подарка ---
+    let caughtCount = 0;
+
+    function moveGift() {
+        const gift = document.getElementById('gift');
+        const speed = Math.max(0.15, 0.35 - caughtCount * 0.01);
+        gift.style.transition = `all ${speed}s cubic-bezier(0.34, 1.2, 0.64, 1)`;
+        gift.style.left = Math.random() * 240 + 'px';
+        gift.style.top  = Math.random() * 250 + 'px';
     }
-    
-    function catchG() {
-        caught++;
-        document.getElementById('g-count').innerText = `СЧЕТ: ${caught} / 15`;
-        
-        // Эффект при ловле
+
+    function catchGift() {
+        caughtCount++;
+        document.getElementById('g-count').innerText = `СЧЁТ: ${caughtCount} / 15`;
+
         const gift = document.getElementById('gift');
         gift.style.transform = 'scale(0.7) rotate(10deg)';
-        setTimeout(() => { 
-            if(gift) gift.style.transform = 'scale(1) rotate(0deg)'; 
-        }, 100);
-        
-        // Эффект частиц
-        const rect = gift.getBoundingClientRect();
-        for(let i = 0; i < 8; i++) {
-            const particle = document.createElement('div');
-            particle.style.position = 'fixed';
-            particle.style.left = rect.left + rect.width/2 + 'px';
-            particle.style.top = rect.top + rect.height/2 + 'px';
-            particle.style.width = '6px';
-            particle.style.height = '6px';
-            particle.style.background = `hsl(${Math.random() * 60 + 40}, 100%, 60%)`;
-            particle.style.borderRadius = '50%';
-            particle.style.pointerEvents = 'none';
-            particle.style.zIndex = '9999';
-            document.body.appendChild(particle);
-            
-            particle.animate([
-                { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+        setTimeout(() => { gift.style.transform = 'scale(1) rotate(0deg)'; }, 100);
+
+        spawnBurstParticles(gift);
+
+        if (caughtCount < 15) {
+            moveGift();
+        } else {
+            gift.style.display = 'none';
+            const btn = document.getElementById('btn3');
+            btn.style.display = 'block';
+            btn.style.animation = "btnPulse 1.5s infinite";
+            for (let i = 0; i < 50; i++) setTimeout(createConfetti, i * 40);
+        }
+    }
+
+    function spawnBurstParticles(el) {
+        const rect = el.getBoundingClientRect();
+        for (let i = 0; i < 8; i++) {
+            const p = document.createElement('div');
+            p.style.cssText = `
+                position:fixed; pointer-events:none; z-index:9999; border-radius:50%;
+                width:6px; height:6px;
+                background:hsl(${Math.random() * 60 + 40}, 100%, 60%);
+                left:${rect.left + rect.width / 2}px;
+                top:${rect.top + rect.height / 2}px;
+            `;
+            document.body.appendChild(p);
+            p.animate([
+                { transform: 'translate(0,0) scale(1)', opacity: 1 },
                 { transform: `translate(${(Math.random() - 0.5) * 80}px, ${(Math.random() - 0.5) * 80 - 40}px) scale(0)`, opacity: 0 }
             ], { duration: 400, easing: 'ease-out' });
-            
-            setTimeout(() => particle.remove(), 400);
-        }
-        
-        if(caught < 15) {
-            moveG();
-        } else {
-            document.getElementById('gift').style.display = 'none';
-            document.getElementById('btn3').style.display = 'block';
-            document.getElementById('btn3').style.animation = "btnPulse 1.5s infinite";
-            // Финальные конфетти
-            for(let i = 0; i < 50; i++) {
-                setTimeout(() => createConfetti(), i * 40);
-            }
+            setTimeout(() => p.remove(), 400);
         }
     }
 
-    let l = 0;
-    function light(e) {
-        if(!e.classList.contains('on')) {
-            e.classList.add('on'); 
-            e.innerText = '🔥'; 
-            l++;
-            
-            // Эффект при зажигании
-            e.style.animation = 'candleBlaze 0.3s ease-in-out';
-            setTimeout(() => { if(e) e.style.animation = ''; }, 300);
-            
-            if(l === 3) {
-                document.getElementById('cake').style.transform = 'scale(1.3)';
-                // Мощный салют
-                for(let i = 0; i < 150; i++) {
-                    setTimeout(() => createConfetti(), i * 20);
-                }
-                setTimeout(() => {
-                    document.getElementById('cake').style.transform = 'scale(1)';
-                }, 500);
-            }
+    // --- Валидация секретного кода ---
+    function validateCode() {
+        const inputVal = document.getElementById('code-field').value.trim().toLowerCase();
+        
+        // Проверка на хамам или хаммам
+        if (inputVal === 'хамам' || inputVal === 'хаммам') {
+            goTo(5); // Переходим на экран финала (s5)
+        } else {
+            alert('Неверный код! Вспомни подсказку или спроси у Бобика.');
         }
     }
+
+    // --- Свечи ---
+    let litCount = 0;
+
+    function lightCandle(el) {
+        if (el.classList.contains('on')) return;
+        el.classList.add('on');
+        el.innerText = '🔥';
+        litCount++;
+
+        if (litCount === 3) {
+            const cake = document.getElementById('cake');
+            cake.style.transform = 'scale(1.3)';
+            setTimeout(() => { cake.style.transform = 'scale(1)'; }, 500);
+            launchConfetti(150, 20);
+        }
+    }
+
+    // --- Конфетти ---
+    const CONFETTI_COLORS = ['#ffd700', '#00d4ff', '#ff6b6b', '#ff9f4a', '#ff69b4', '#9b59b6'];
 
     function createConfetti() {
-        const colors = ['#ffd700', '#00d4ff', '#ff6b6b', '#ff9f4a', '#ff4d4d', '#ff69b4', '#9b59b6'];
+        const color = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
         const d = document.createElement('div');
         d.className = 'confetti-particle';
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        d.style.background = color;
-        d.style.width = Math.random() * 10 + 5 + 'px';
-        d.style.height = Math.random() * 10 + 5 + 'px';
-        d.style.left = Math.random() * 100 + '%';
-        d.style.top = '-20px';
-        d.style.borderRadius = Math.random() > 0.5 ? '50%' : '0%';
-        d.style.position = 'fixed';
-        d.style.boxShadow = `0 0 5px ${color}`;
+        const size = Math.random() * 10 + 5;
+        d.style.cssText = `
+            width:${size}px; height:${size}px;
+            background:${color};
+            left:${Math.random() * 100}%;
+            top:-20px;
+            border-radius:${Math.random() > 0.5 ? '50%' : '0'};
+            box-shadow:0 0 5px ${color};
+        `;
         document.body.appendChild(d);
-        
-        const rotation = Math.random() * 720;
+
         const duration = 1500 + Math.random() * 1500;
         d.animate([
-            { transform: `translateY(0) rotate(0deg)`, opacity: 1 },
-            { transform: `translateY(100vh) rotate(${rotation}deg)`, opacity: 0 }
-        ], { duration: duration, easing: 'cubic-bezier(0.2, 0.9, 0.4, 1)' });
-        
+            { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+            { transform: `translateY(100vh) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+        ], { duration, easing: 'cubic-bezier(0.2, 0.9, 0.4, 1)' });
+
         setTimeout(() => d.remove(), duration);
+    }
+
+    function launchConfetti(count = 50, interval = 30) {
+        for (let i = 0; i < count; i++) {
+            setTimeout(createConfetti, i * interval);
+        }
     }
 </script>
 </body>
